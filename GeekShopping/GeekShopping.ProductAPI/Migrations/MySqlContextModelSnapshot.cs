@@ -13,7 +13,7 @@ namespace GeekShopping.ProductAPI.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
+            #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
@@ -54,7 +54,7 @@ namespace GeekShopping.ProductAPI.Migrations
 
                     b.ToTable("product");
                 });
-#pragma warning restore 612, 618
+                #pragma warning restore 612, 618
         }
     }
 }
