@@ -40,7 +40,7 @@ internal class Program
 
         // Add services to the container.
 
-        var connection = "MySQLConnection:MySQLConnectionString";
+        var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
 
         builder.Services.AddDbContext<MySqlContext>(options => options
                 .UseMySql(connection,
