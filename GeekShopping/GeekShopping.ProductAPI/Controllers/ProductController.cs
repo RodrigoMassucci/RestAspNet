@@ -13,7 +13,7 @@ namespace GeekShopping.ProductAPI.Controllers
 
         public ProductController(IProductRepository repository)
         {
-            _repository = repository ?? throw new ArgumentException(nameof(repository));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]
@@ -26,15 +26,49 @@ namespace GeekShopping.ProductAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductVO>> FindById(long id)
         {
-            var product = await _repository.FindById(id);
+            if (id > 0)
+            {
+                var product = await _repository.FindById(id);
+                return product == null ? NotFound() : Ok(product);
+            }
 
-            if (product == null) 
-                return NotFound();
-
-            return Ok(product);
+            return BadRequest();
         }
 
+        [HttpPost]
+        public async Task<ActionResult<ProductVO>> Create(ProductVO vo)
+        {
+            if (!string.IsNullOrWhiteSpace(vo.Name) && vo.Price > 0)
+            {
+                var product = await _repository.Create(vo);
+                return Ok(product);
+            }
 
+            return BadRequest();
+        }
 
+        [HttpPut]
+        public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO vo)
+        {
+            if (vo.Id > 0 && !string.IsNullOrWhiteSpace(vo.Name) && vo.Price > 0)
+            {
+                var product = await _repository.Update(vo);
+                return Ok(product);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(long id)
+        {
+            if (id > 0)
+            {
+                var status = await _repository.Delete(id);
+                return status ? Ok() : BadRequest();
+            }
+
+            return BadRequest();
+        }
     }
 }

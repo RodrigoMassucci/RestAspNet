@@ -40,11 +40,13 @@ namespace GeekShopping.ProductAPI.Repository
 
         public async Task<ProductVO> Update(ProductVO vo)
         {
-            Product products = _mapper.Map<Product>(vo);
-            _context.Products.Add(products);
-            await _context.SaveChangesAsync();
+            //Product products = _mapper.Map<Product>(vo);
+            //_context.Products.Add(products);
+            //await _context.SaveChangesAsync();
 
-            return _mapper.Map<ProductVO>(products);
+            //return _mapper.Map<ProductVO>(products);
+
+            return null;
         }
 
         public async Task<bool> Delete(long id)
