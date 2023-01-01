@@ -20,7 +20,6 @@ namespace GeekShopping.ProductAPI.Data.ValueObjects
 
         public MessageError()
         {
-            code = 0;
             Message = string.Empty;
         }
     }

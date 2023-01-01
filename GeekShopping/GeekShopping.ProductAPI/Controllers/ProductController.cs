@@ -64,7 +64,6 @@ namespace GeekShopping.ProductAPI.Controllers
             else
             {
                 error = new MessageError();
-                error.code = 400;
                 error.Message = "Verifique o preenchimento dos Obrigatórios";
 
                 return BadRequest(error);
