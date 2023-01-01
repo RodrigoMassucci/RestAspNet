@@ -29,7 +29,7 @@ namespace GeekShopping.ProductAPI.Controllers
             if (id > 0)
             {
                 var product = await _repository.FindById(id);
-                return product == null ? NotFound() : Ok(product);
+                return product.Id <= 0 ? NotFound() : Ok(product);
             }
 
             return BadRequest();
@@ -48,15 +48,28 @@ namespace GeekShopping.ProductAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO vo)
+        public async Task<ActionResult<ProductVO>> Update(ProductVO vo)
         {
+            MessageError error;
+
             if (vo.Id > 0 && !string.IsNullOrWhiteSpace(vo.Name) && vo.Price > 0)
             {
                 var product = await _repository.Update(vo);
+
+                if (product == null)
+                    return BadRequest();
+
                 return Ok(product);
             }
+            else
+            {
+                error = new MessageError();
+                error.code = 400;
+                error.Message = "Verifique o preenchimento dos Obrigatórios";
 
-            return BadRequest();
+                return BadRequest(error);
+            }
+
         }
 
         [HttpDelete("{id}")]

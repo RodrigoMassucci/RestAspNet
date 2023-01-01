@@ -25,37 +25,48 @@ namespace GeekShopping.ProductAPI.Repository
 
         public async Task<ProductVO> FindById(long id)
         {
-            Product products = await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
-            return _mapper.Map<ProductVO>(products);
+            Product product = await _context.Products.Where(p =>
+                    p.Id == id).FirstOrDefaultAsync() ?? new Product();
+
+            return _mapper.Map<ProductVO>(product);
         }
 
         public async Task<ProductVO> Create(ProductVO vo)
         {
-            Product products = _mapper.Map<Product>(vo);
-            _context.Products.Add(products);
+            Product product = _mapper.Map<Product>(vo);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<ProductVO>(products);
+            return _mapper.Map<ProductVO>(product);
         }
 
         public async Task<ProductVO> Update(ProductVO vo)
         {
-            //Product products = _mapper.Map<Product>(vo);
-            //_context.Products.Add(products);
-            //await _context.SaveChangesAsync();
+            Product products = new Product();
 
-            //return _mapper.Map<ProductVO>(products);
-
-            return null;
+            try
+            {
+                products = _mapper.Map<Product>(vo);
+                _context.Products.Add(products);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                return null;
+            }
+            
+            return _mapper.Map<ProductVO>(products);
         }
 
         public async Task<bool> Delete(long id)
         {
             try
             {
-                Product products = await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+                Product products = await _context.Products.Where(p => 
+                    p.Id == id).FirstOrDefaultAsync() ?? new Product();
 
-                if (products == null)
+                if (products.Id <= 0)
                     return false;
 
                 _context.Products.Remove(products);

@@ -12,4 +12,16 @@ namespace GeekShopping.ProductAPI.Data.ValueObjects
         public string CategoryName { get; set; }
         public string ImageUrl { get; set; }
     }
+
+    public class MessageError
+    {
+        public int code { get; set; }
+        public string Message { get; set; }
+
+        public MessageError()
+        {
+            code = 0;
+            Message = string.Empty;
+        }
+    }
 }
